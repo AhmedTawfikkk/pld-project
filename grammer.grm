@@ -1,0 +1,82 @@
+"Name"          = 'Random'
+"Author"        = 'Ahmed Mohamed tawfik'
+
+"Start Symbol" = <main>
+               
+!--------------Terminal--------------------
+Id= ('_'|'$'|{letter}){alphanumeric}*
+Digit = ('+'|'-')?{digit}+ (','{digit}+)? (('e' | ('+'|'-')?{digit}+) '^' ('+'|'-')?{digit}+ (','{digit}+)?)?
+!---------------Rules-------------------
+<main> ::= 'begin' <statement_list> 'finish' 
+     
+<statement_list> ::= <statement>
+        |<statement> <statement_list>
+        
+<statement> ::= <assign>
+           |<declaration>
+           |<wheather_statement>
+           |<for_statement>
+           |<while_statement>
+           |<function_definition>
+           |<function-call>
+           
+<assign> ::=<id>'='<expr>
+          
+<id>::=Id
+     
+<expr> ::=<expr>'+'<term>
+        |<expr>'-'<term>
+        |<term>
+        
+<term> ::=<term>'*'<factor>
+        |<term>'/'<factor>
+        |<factor>
+        
+<factor> ::=<factor>'**'<exp>
+          |<exp>
+          
+<exp> ::='('<expr>')'
+       |<id>
+       |<digit>
+       
+
+<digit> ::= Digit
+         
+!--------wheather statement--------
+<wheather_statement> ::= wheather '[' <con> ']' '{' <statement_list> '}' 
+                 | wheather '[' <con> ']' '{' <statement_list> '}' else '{' <statement_list> '}' 
+                 | wheather '[' <con> ']' '{' <statement_list> '}' else if '[' <con> ']' '{' <statement_list> '}'
+                 | wheather '[' <con> ']' '{' <statement_list> '}' else if '[' <con> ']' '{' <statement_list> '}' else '{' <statement_list> '}'
+
+        
+<con> ::=<expr><op><expr>
+       
+<op> ::= '<' | '>' | '==' | '<>'
+      
+!--------------------for loop---------
+<for_statement> ::= for '[' <datatype><assign> ';' <con> ';' <increment_decrement> ']' '{' <statement_list> '}'
+          
+<datatype> ::=int | string | float
+        
+<increment_decrement> ::= '--'<id>
+        |'++'<id>
+        |<assign>
+        
+!---------while--------------------
+<while_statement> ::= while <con> ':' <statement_list> <increment_decrement>endwhile
+!-------------declaration------------
+
+<declaration> ::= <datatype><assign>     
+!------function------
+
+<function_definition> ::=function <name>'['<parameter>']' '{'<statement_list> '}'
+
+<name> ::= <id>
+<data-Type> ::= <datatype>
+               
+<parameter> ::= <datatype><id>
+             |<datatype><id>','<parameter>
+             
+!---------------------func-call-----------------
+
+<function-call> ::= <name> '('<parameter>')'
